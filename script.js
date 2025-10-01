@@ -96,6 +96,35 @@ function delegate(root, selector, event, handler) {
     });
 }
 
+// document.addEventListener('DOMContentLoaded', () => {
+//     renderCards();
+
+//     const grid = document.getElementById('cardsGrid');
+//     delegate(grid, 'button[data-action="open"]', 'click', (_, btn) => {
+//         const id = btn.getAttribute('data-id');
+//         const prompt = getPromptById(id);
+//         if (!prompt) return;
+//         if (prompt.externalLink) {
+//             window.open(prompt.externalLink, '_blank', );
+//         } else {
+//             openModalWithPrompt(prompt);
+//         }
+//     });
+    
+
+//     const modal = document.getElementById('promptModal');
+//     delegate(modal, '[data-action="close"]', 'click', () => closeModal());
+//     document.addEventListener('keydown', (e) => {
+//         if (e.key === 'Escape') closeModal();
+//     });
+
+//     if (location.hash) {
+//         const id = location.hash.replace('#', '');
+//         const prompt = getPromptById(id);
+//         if (prompt) openModalWithPrompt(prompt);
+//     }
+// });
+
 document.addEventListener('DOMContentLoaded', () => {
     renderCards();
 
@@ -104,8 +133,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const id = btn.getAttribute('data-id');
         const prompt = getPromptById(id);
         if (!prompt) return;
+
         if (prompt.externalLink) {
-            window.open(prompt.externalLink, '_blank', );
+            // Mobile-friendly way to open in a new tab
+            const a = document.createElement('a');
+            a.href = prompt.externalLink;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
         } else {
             openModalWithPrompt(prompt);
         }
@@ -123,5 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prompt) openModalWithPrompt(prompt);
     }
 });
+
 
 
