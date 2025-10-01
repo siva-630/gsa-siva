@@ -159,10 +159,22 @@ body {
     .site-header { padding: 40px 16px 16px; }
     .title-gradient { font-size: 32px; }
     .subtitle { font-size: 14px; }
-    .container { padding: 16px 16px 60px; }
-    .cards-grid { gap: 14px; }
+    .container { padding: 16px 16px 56px; }
+    .cards-grid { gap: 16px; }
+    .card { padding: 16px; border-radius: 12px; }
+    .card-title { font-size: 20px; }
+    .card-desc { font-size: 14px; }
     .card-actions { flex-direction: column; align-items: stretch; }
-    .card-actions .btn { width: 100%; }
+    .card-actions .btn { width: 100%; padding: 14px 18px; font-size: 16px; }
+    .card-actions .btn[data-action="open"] { font-size: 17px; }
+
+    /* Header CTA and logos */
+    .run-logo { width: 28px; height: 28px; }
+    .sparkle-button { width: 90vw; max-width: 320px; justify-content: center; }
+    .sparkle-button .text { font-size: 16px; }
+
+    /* Centered image below tagline */
+    img[src*="g1.jpeg"] { max-width: 70%; }
 }
 .modal-title { margin: 0 0 10px; }
 .modal-body {
@@ -180,6 +192,19 @@ body {
 .modal-actions { margin-top: 12px; display: flex; justify-content: flex-end; }
 
 .site-footer { text-align: center; padding: 24px; color: var(--muted); }
+
+/* Footer styles */
+.footer-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--text);
+    font-weight: 700;
+}
+.footer-logo { width: 28px; height: 28px; object-fit: contain; border-radius: 6px; }
+.footer-text { font-size: 16px; }
+.footer-thanks { margin-top: 6px; color: var(--muted); font-weight: 600; }
 
 
 /* Sparkle button styles (Uiverse.io by JkHuger) */
