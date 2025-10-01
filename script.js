@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const prompt = getPromptById(id);
         if (!prompt) return;
         if (prompt.externalLink) {
-            window.open(prompt.externalLink, '_blank', 'noopener');
+            window.open(prompt.externalLink, '_blank', 'noopener,noreferrer');
         } else {
             openModalWithPrompt(prompt);
         }
