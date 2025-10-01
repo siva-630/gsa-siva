@@ -97,7 +97,7 @@ body {
     min-height: 42px;
 }
 
-.card-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.card-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: center; }
 
 .btn {
     appearance: none;
@@ -105,10 +105,10 @@ body {
     background: #0ea5e9;
     color: white;
     font-weight: 600;
-    padding: 10px 14px;
+    padding: 12px 18px;
     border-radius: 999px;
     cursor: pointer;
-    transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+    transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease, font-size 120ms ease;
     box-shadow: 0 6px 14px rgba(14, 165, 233, 0.3);
 }
 
@@ -130,6 +130,8 @@ body {
     border: 2px solid #e2e8f0;
     box-shadow: none;
 }
+.card-actions .btn[data-action="open"] { font-size: 16px; }
+.card-actions .btn[data-action="open"]:hover { font-size: 17px; }
 .card.google-border-1 .btn-outline { border-color: var(--google-blue); }
 .card.google-border-2 .btn-outline { border-color: var(--google-gray); color: var(--google-gray); }
 .card.google-border-3 .btn-outline { border-color: var(--google-yellow); color: var(--google-yellow); }
@@ -261,6 +263,7 @@ body {
     position: relative;
     gap: 8px;
 }
+.run-logo { width: 36px; height: 36px; object-fit: contain; border-radius: 8px; box-shadow: 0 6px 14px rgba(0,0,0,0.25); }
 
 .run-button:hover { background-color: #3654ff; cursor: pointer; }
 .run-button svg { width: 1.6em; position: absolute; left: 10px; transition: all 0.6s ease; }
