@@ -87,46 +87,49 @@ function toast(message) {
     setTimeout(() => { el.remove(); }, 2000);
 }
 
-delegate(grid, 'button[data-action="open"]', 'click', (_, btn) => {
-    const id = btn.getAttribute('data-id');
-    const prompt = getPromptById(id);
-    if (!prompt) return;
-
-    if (prompt.externalLink) {
-        // Create a temporary link element
-        const a = document.createElement('a');
-        a.href = prompt.externalLink;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        // Programmatically click it
-        a.click();
-    } else {
-        openModalWithPrompt(prompt);
-    }
-});
-
+function delegate(parent, selector, type, handler) {
+    parent.addEventListener(type, function (event) {
+        const target = event.target.closest(selector);
+        if (target && parent.contains(target)) {
+            handler(event, target);
+        }
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.getElementById('cardsGrid');
+
+    function renderCards() {
+        grid.innerHTML = prompts.map((p, i) => {
+            const borderClass = `google-border-${(i % 5) + 1}`;
+            return `
+                <article class="card ${borderClass}" id="card-${p.id}">
+                    <h3 class="card-title">${p.title}</h3>
+                    <p class="card-desc">${p.description}</p>
+                    <div class="card-actions">
+                        <button class="btn btn-outline" data-action="open" data-id="${p.id}"><strong>Open Prompt</strong></button>
+                    </div>
+                </article>
+            `;
+        }).join('');
+    }
+
     renderCards();
 
-    const grid = document.getElementById('cardsGrid');
     delegate(grid, 'button[data-action="open"]', 'click', (_, btn) => {
         const id = btn.getAttribute('data-id');
         const prompt = getPromptById(id);
         if (!prompt) return;
         if (prompt.externalLink) {
-            window.open(prompt.externalLink, '_blank', );
+            window.open(prompt.externalLink, '_blank');
         } else {
             openModalWithPrompt(prompt);
         }
     });
-    
 
     const modal = document.getElementById('promptModal');
     delegate(modal, '[data-action="close"]', 'click', () => closeModal());
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
-    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
     if (location.hash) {
         const id = location.hash.replace('#', '');
