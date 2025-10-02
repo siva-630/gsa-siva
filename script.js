@@ -87,50 +87,40 @@ function toast(message) {
     setTimeout(() => { el.remove(); }, 2000);
 }
 
-function delegate(root, selector, event, handler) {
-    root.addEventListener(event, (e) => {
-        const target = e.target.closest(selector);
-        if (target && root.contains(target)) {
-            handler(e, target);
-        }
-    });
-}
+delegate(grid, 'button[data-action="open"]', 'click', (_, btn) => {
+    const id = btn.getAttribute('data-id');
+    const prompt = getPromptById(id);
+    if (!prompt) return;
+
+    if (prompt.externalLink) {
+        // Create a temporary link element
+        const a = document.createElement('a');
+        a.href = prompt.externalLink;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        // Programmatically click it
+        a.click();
+    } else {
+        openModalWithPrompt(prompt);
+    }
+});
 
 
 document.addEventListener('DOMContentLoaded', () => {
     renderCards();
 
     const grid = document.getElementById('cardsGrid');
-    delegate(grid, 'button[data-action="open"]', (_, btn) => {
+    delegate(grid, 'button[data-action="open"]', 'click', (_, btn) => {
         const id = btn.getAttribute('data-id');
         const prompt = getPromptById(id);
-        if (!prompt || !prompt.externalLink) return;
-
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-        if (isMobile) {
-            // Replace this with actual Gemini deep link for the prompt
-            const deepLink = `gemini://prompt/${prompt.id}`;
-
-            // Fallback timer: if app does not open, redirect to browser
-            const fallbackTimeout = setTimeout(() => {
-                window.location.href = prompt.externalLink;
-            }, 1500);
-
-            // Attempt to open Gemini app
-            const a = document.createElement('a');
-            a.href = deepLink;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-
-            // Clear fallback if app opened successfully (user leaves page)
-            window.addEventListener('blur', () => clearTimeout(fallbackTimeout));
+        if (!prompt) return;
+        if (prompt.externalLink) {
+            window.open(prompt.externalLink, '_blank', );
         } else {
-            // Desktop: open in new tab
-            window.open(prompt.externalLink, '_blank');
+            openModalWithPrompt(prompt);
         }
     });
+    
 
     const modal = document.getElementById('promptModal');
     delegate(modal, '[data-action="close"]', 'click', () => closeModal());
@@ -144,6 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prompt) openModalWithPrompt(prompt);
     }
 });
+
+
 
 
 
