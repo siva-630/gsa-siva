@@ -135,14 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!prompt) return;
 
         if (prompt.externalLink) {
-            // Mobile-friendly way to open in a new tab
-            const a = document.createElement('a');
-            a.href = prompt.externalLink;
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
+            // ✅ Append the prompt text in the URL
+            const url = `${prompt.externalLink}&q=${encodeURIComponent(prompt.content)}`;
+            window.open(url, '_blank');
         } else {
             openModalWithPrompt(prompt);
         }
@@ -160,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prompt) openModalWithPrompt(prompt);
     }
 });
+
 
 
 
