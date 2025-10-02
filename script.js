@@ -124,20 +124,27 @@ function delegate(root, selector, event, handler) {
 //         if (prompt) openModalWithPrompt(prompt);
 //     }
 // });
-
 document.addEventListener('DOMContentLoaded', () => {
     renderCards();
 
     const grid = document.getElementById('cardsGrid');
-    delegate(grid, 'button[data-action="open"]', 'click', (_, btn) => {
+    delegate(grid, 'button[data-action="open"]', 'click', async (_, btn) => {
         const id = btn.getAttribute('data-id');
         const prompt = getPromptById(id);
         if (!prompt) return;
 
         if (prompt.externalLink) {
-            // ✅ Append the prompt text in the URL
-            const url = `${prompt.externalLink}&q=${encodeURIComponent(prompt.content)}`;
-            window.open(url, '_blank');
+            try {
+                // ✅ Copy prompt text to clipboard before opening Gemini
+                await navigator.clipboard.writeText(prompt.content);
+                toast("Prompt copied! Paste it in Gemini.");
+            } catch (err) {
+                console.error("Clipboard copy failed:", err);
+                toast("Could not copy prompt automatically. Copy manually.");
+            }
+
+            // ✅ Open Gemini (or mediator page)
+            window.open(prompt.externalLink, '_blank');
         } else {
             openModalWithPrompt(prompt);
         }
@@ -155,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prompt) openModalWithPrompt(prompt);
     }
 });
+
 
 
 
