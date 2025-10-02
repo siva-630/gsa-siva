@@ -128,25 +128,25 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCards();
 
     const grid = document.getElementById('cardsGrid');
-    delegate(grid, 'button[data-action="open"]', 'click', async (_, btn) => {
+    delegate(grid, 'button[data-action="open"]', 'click', (_, btn) => {
         const id = btn.getAttribute('data-id');
         const prompt = getPromptById(id);
-        if (!prompt) return;
+        if (!prompt || !prompt.externalLink) return;
 
-        if (prompt.externalLink) {
-            try {
-                // ✅ Copy prompt text to clipboard before opening Gemini
-                await navigator.clipboard.writeText(prompt.content);
-                toast("Prompt copied! Paste it in Gemini.");
-            } catch (err) {
-                console.error("Clipboard copy failed:", err);
-                toast("Could not copy prompt automatically. Copy manually.");
-            }
+        // Detect mobile
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-            // ✅ Open Gemini (or mediator page)
-            window.open(prompt.externalLink, '_blank');
+        if (isMobile) {
+            // Try to open Gemini app via deep link if available
+            // Replace 'gemini://prompt/17' with actual deep link if supported
+            // const deepLink = prompt.deepLink; 
+            // window.location.href = deepLink;
+
+            // If deep link not available, fallback to browser
+            window.location.href = prompt.externalLink;
         } else {
-            openModalWithPrompt(prompt);
+            // Desktop: open in new tab
+            window.open(prompt.externalLink, '_blank');
         }
     });
 
@@ -162,6 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prompt) openModalWithPrompt(prompt);
     }
 });
+
+
 
 
 
