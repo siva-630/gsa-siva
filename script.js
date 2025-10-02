@@ -96,54 +96,36 @@ function delegate(root, selector, event, handler) {
     });
 }
 
-// document.addEventListener('DOMContentLoaded', () => {
-//     renderCards();
 
-//     const grid = document.getElementById('cardsGrid');
-//     delegate(grid, 'button[data-action="open"]', 'click', (_, btn) => {
-//         const id = btn.getAttribute('data-id');
-//         const prompt = getPromptById(id);
-//         if (!prompt) return;
-//         if (prompt.externalLink) {
-//             window.open(prompt.externalLink, '_blank', );
-//         } else {
-//             openModalWithPrompt(prompt);
-//         }
-//     });
-    
-
-//     const modal = document.getElementById('promptModal');
-//     delegate(modal, '[data-action="close"]', 'click', () => closeModal());
-//     document.addEventListener('keydown', (e) => {
-//         if (e.key === 'Escape') closeModal();
-//     });
-
-//     if (location.hash) {
-//         const id = location.hash.replace('#', '');
-//         const prompt = getPromptById(id);
-//         if (prompt) openModalWithPrompt(prompt);
-//     }
-// });
 document.addEventListener('DOMContentLoaded', () => {
     renderCards();
 
     const grid = document.getElementById('cardsGrid');
-    delegate(grid, 'button[data-action="open"]', 'click', (_, btn) => {
+    delegate(grid, 'button[data-action="open"]', (_, btn) => {
         const id = btn.getAttribute('data-id');
         const prompt = getPromptById(id);
         if (!prompt || !prompt.externalLink) return;
 
-        // Detect mobile
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
         if (isMobile) {
-            // Try to open Gemini app via deep link if available
-            // Replace 'gemini://prompt/17' with actual deep link if supported
-            // const deepLink = prompt.deepLink; 
-            // window.location.href = deepLink;
+            // Replace this with actual Gemini deep link for the prompt
+            const deepLink = `gemini://prompt/${prompt.id}`;
 
-            // If deep link not available, fallback to browser
-            window.location.href = prompt.externalLink;
+            // Fallback timer: if app does not open, redirect to browser
+            const fallbackTimeout = setTimeout(() => {
+                window.location.href = prompt.externalLink;
+            }, 1500);
+
+            // Attempt to open Gemini app
+            const a = document.createElement('a');
+            a.href = deepLink;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            // Clear fallback if app opened successfully (user leaves page)
+            window.addEventListener('blur', () => clearTimeout(fallbackTimeout));
         } else {
             // Desktop: open in new tab
             window.open(prompt.externalLink, '_blank');
@@ -162,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prompt) openModalWithPrompt(prompt);
     }
 });
+
 
 
 
