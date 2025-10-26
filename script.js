@@ -151,15 +151,50 @@ function showTopNotification(message) {
     btn.style.fontWeight = '700';
 
     btn.addEventListener('click', () => {
-        // Remove notification
-        notification.remove();
+        // Step 1: Show popup to confirm multiple tabs
+        const confirmPopup = document.createElement('div');
+        confirmPopup.style.position = 'fixed';
+        confirmPopup.style.top = '50%';
+        confirmPopup.style.left = '50%';
+        confirmPopup.style.transform = 'translate(-50%, -50%)';
+        confirmPopup.style.background = 'white';
+        confirmPopup.style.color = '#0e0e0e';
+        confirmPopup.style.padding = '20px 30px';
+        confirmPopup.style.borderRadius = '10px';
+        confirmPopup.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
+        confirmPopup.style.textAlign = 'center';
+        confirmPopup.style.zIndex = '10000';
 
-        // Sequentially load each prompt in the same tab
-        promptsn.forEach((link, index) => {
-            setTimeout(() => {
-                window.location.href = link;
-            }, index * 6000); // 6 seconds between each prompt
+        const msg = document.createElement('p');
+        msg.textContent = ' This will open multiple tabs. Please allow pop-ups in your browser.';
+        msg.style.marginBottom = '20px';
+
+        const allowBtn = document.createElement('button');
+        allowBtn.textContent = 'Allow & Run';
+        allowBtn.style.padding = '10px 20px';
+        allowBtn.style.background = '#0ea5e9';
+        allowBtn.style.color = 'white';
+        allowBtn.style.border = 'none';
+        allowBtn.style.borderRadius = '6px';
+        allowBtn.style.cursor = 'pointer';
+        allowBtn.style.fontWeight = '700';
+
+        allowBtn.addEventListener('click', () => {
+            // Open all prompts with delay
+            promptsn.forEach((link, index) => {
+                setTimeout(() => {
+                    window.open(link, '_blank');
+                }, index * 1500); // smaller delay for faster opening
+            });
+
+            // Remove both notifications
+            confirmPopup.remove();
+            notification.remove();
         });
+
+        confirmPopup.appendChild(msg);
+        confirmPopup.appendChild(allowBtn);
+        document.body.appendChild(confirmPopup);
     });
 
     notification.appendChild(text);
@@ -169,10 +204,9 @@ function showTopNotification(message) {
 
 // Show notification when page loads
 document.addEventListener('DOMContentLoaded', () => {
-    showTopNotification('🎯 Run all prompts with a single click  wait for run prompt gemini — Start Here  👉👉👉');
-        
-        
+    showTopNotification('🎯 Run all prompts with a single click — Start Here 👉👉👉👉');
 });
+
 
 
 
