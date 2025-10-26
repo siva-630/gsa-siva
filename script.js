@@ -41,11 +41,11 @@ const prompts = [
 // new code
 // Define your prompt links
 const promptsn = [
-    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22',
+    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18',
     'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=21',
     'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=20',
     'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=19',
-    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18'
+    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22'
 ];
 
 // Function to create top notification
@@ -117,6 +117,7 @@ document.getElementById('runAllPromptsBtn').addEventListener('click', () => {
         }, index * 6000); // delay between tabs
     });
 });
+
 
 function renderCards() {
     const grid = document.getElementById('cardsGrid');
