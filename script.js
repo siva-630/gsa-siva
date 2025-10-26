@@ -2,37 +2,37 @@ const prompts = [
     {
         id: 'prompt-1',
         title: 'Brainstorm',
-        description: 'Ask me 5 short and simple, multiple choice questions about my personality, one by one, and then tell me what famous artist or designer I am most like.',
-        content: `Ask me 5 short and simple, multiple choice questions about my personality, one by one, and then tell me what famous artist or designer I am most like.`,
-        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=17'
+        description: 'Explain a local festival from my region to a friend from a different part of the country.',
+        content: `Explain a local festival from my region to a friend from a different part of the country.`,
+        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22'
     },
     {
         id: 'prompt-2',
-        title: 'Plan',
-        description: 'Help me plan a small, festive get-together for 5 friends at home. Suggest a simple menu, a music playlist theme, and one fun game we can play.',
-        content: `Help me plan a small, festive get-together for 5 friends at home. Suggest a simple menu, a music playlist theme, and one fun game we can play.`,
-        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=16'
+        title: 'Suggest',
+        description: 'Suggest a fun way to track my spending that feels more like a story or game than a spreadsheet.',
+        content: `Suggest a fun way to track my spending that feels more like a story or game than a spreadsheet.`,
+        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=21'
     },
     {
         id: 'prompt-3',
-        title: 'Historical',
-        description: 'Pick a popular historical movie (Bollywood/Tollywood etc.) and point out three major historical inaccuracies in a fun, myth-busting way.',
-        content: `Pick a popular historical movie (Bollywood/Tollywood etc.) and point out three major historical inaccuracies in a fun, myth-busting way.`,
-        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=15'
+        title: 'fest',
+        description: 'My college fest is coming up. Help me brainstorm 5 unique ideas for a stall or event that are low-cost but can attract a lot of Footfall',
+        content: `My college fest is coming up. Help me brainstorm 5 unique ideas for a stall or event that are low-cost but can attract a lot of Footfall`,
+        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=20'
     },
     {
         id: 'prompt-4',
-        title: 'Weekend plan',
-        description: 'I have a week-long break. Suggest a location were I can go with my friends for a weekend getaway.',
-        content: `I have a week-long break. Suggest a location were I can go with my friends for a weekend getaway.`,
-        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=14'
+        title: 'collage plan',
+        description: 'I want to start a podcast for college students. Brainstorm 5 unique podcast concepts and suggest a name and a target audience for each.',
+        content: `I want to start a podcast for college students. Brainstorm 5 unique podcast concepts and suggest a name and a target audience for each.`,
+        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=19'
     },
     {
         id: 'prompt-5',
-        title: 'Festive season',
-        description: 'The festive season is here. Suggest 5 creative and eco-friendly ways to decorate my home or hostel room to give it a festive vibe.',
-        content: `The festive season is here. Suggest 5 creative and eco-friendly ways to decorate my home or hostel room to give it a festive vibe.`,
-        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=13'
+        title: 'study plan',
+        description: 'Create a 7-day study plan for my upcoming final exams, include short breaks',
+        content: `Create a 7-day study plan for my upcoming final exams, include short breaks`,
+        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18'
     }
 ];
 
