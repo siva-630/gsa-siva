@@ -1,10 +1,12 @@
 const prompts = [
-    {
-        id: 'prompt-1',
-        title: 'Brainstorm',
-        description: 'Explain a local festival from my region to a friend from a different part of the country.',
-        content: `Explain a local festival from my region to a friend from a different part of the country.`,
-        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22'
+
+
+        {
+        id: 'prompt-5',
+        title: 'study plan',
+        description: 'Create a 7-day study plan for my upcoming final exams, include short breaks',
+        content: `Create a 7-day study plan for my upcoming final exams, include short breaks`,
+        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18'
     },
     {
         id: 'prompt-2',
@@ -27,13 +29,14 @@ const prompts = [
         content: `I want to start a podcast for college students. Brainstorm 5 unique podcast concepts and suggest a name and a target audience for each.`,
         externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=19'
     },
-    {
-        id: 'prompt-5',
-        title: 'study plan',
-        description: 'Create a 7-day study plan for my upcoming final exams, include short breaks',
-        content: `Create a 7-day study plan for my upcoming final exams, include short breaks`,
-        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18'
-    }
+        {
+        id: 'prompt-1',
+        title: 'Brainstorm',
+        description: 'Explain a local festival from my region to a friend from a different part of the country.',
+        content: `Explain a local festival from my region to a friend from a different part of the country.`,
+        externalLink: 'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22'
+    },
+
 ];
 
 function renderCards() {
