@@ -96,7 +96,6 @@ const prompts = [
 //     if (notification) notification.remove();
         
 //     });
-        
 
 //     notification.appendChild(text);
 //     notification.appendChild(btn);
@@ -108,6 +107,7 @@ const prompts = [
 // document.addEventListener('DOMContentLoaded', () => {
 //     showTopNotification('🎯 Run all prompts with a single click — Start Here 👉👉👉👉');
 // });
+
 const promptsn = [
     'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18',
     'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=21',
@@ -126,7 +126,7 @@ function showTopNotification(message) {
     notification.style.top = '0';
     notification.style.left = '0';
     notification.style.width = '100%';
-    notification.style.background = '#0e0e0eff';
+    notification.style.background = 'linear-gradient(90deg, #0ea5e9, #3b82f6)';
     notification.style.color = 'white';
     notification.style.display = 'flex';
     notification.style.justifyContent = 'space-between';
@@ -134,67 +134,51 @@ function showTopNotification(message) {
     notification.style.padding = '12px 20px';
     notification.style.zIndex = '9999';
     notification.style.fontWeight = '600';
-    notification.style.boxShadow = '0 4px 10px rgba(0,0,0,0.25)';
+    notification.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
     notification.style.fontSize = '16px';
+    notification.style.borderRadius = '0 0 10px 10px';
+    notification.style.backdropFilter = 'blur(6px)';
 
     const text = document.createElement('span');
     text.textContent = message;
+    text.style.flex = '1';
 
     const btn = document.createElement('button');
     btn.textContent = 'Run All Prompts';
     btn.style.background = 'white';
     btn.style.color = '#0ea5e9';
     btn.style.border = 'none';
-    btn.style.padding = '8px 14px';
-    btn.style.borderRadius = '6px';
+    btn.style.padding = '10px 18px';
+    btn.style.marginLeft = '15px';
+    btn.style.borderRadius = '8px';
     btn.style.cursor = 'pointer';
     btn.style.fontWeight = '700';
+    btn.style.transition = 'all 0.3s ease';
+    btn.addEventListener('mouseover', () => {
+        btn.style.transform = 'scale(1.05)';
+        btn.style.background = '#e0f2fe';
+    });
+    btn.addEventListener('mouseout', () => {
+        btn.style.transform = 'scale(1)';
+        btn.style.background = 'white';
+    });
 
-    btn.addEventListener('click', () => {
-        // Step 1: Show popup to confirm multiple tabs
-        const confirmPopup = document.createElement('div');
-        confirmPopup.style.position = 'fixed';
-        confirmPopup.style.top = '50%';
-        confirmPopup.style.left = '50%';
-        confirmPopup.style.transform = 'translate(-50%, -50%)';
-        confirmPopup.style.background = 'white';
-        confirmPopup.style.color = '#0e0e0e';
-        confirmPopup.style.padding = '20px 30px';
-        confirmPopup.style.borderRadius = '10px';
-        confirmPopup.style.boxShadow = '0 4px 10px rgba(0,0,0,0.3)';
-        confirmPopup.style.textAlign = 'center';
-        confirmPopup.style.zIndex = '10000';
+    // Ask for popup permission first
+    btn.addEventListener('click', async () => {
+        const confirmOpen = confirm("👉 This will open multiple tabs for run all prompts.");
+        if (!confirmOpen) return;
 
-        const msg = document.createElement('p');
-        msg.textContent = ' This will open multiple tabs. Please allow pop-ups in your browser.';
-        msg.style.marginBottom = '20px';
-
-        const allowBtn = document.createElement('button');
-        allowBtn.textContent = 'Allow & Run';
-        allowBtn.style.padding = '10px 20px';
-        allowBtn.style.background = '#0ea5e9';
-        allowBtn.style.color = 'white';
-        allowBtn.style.border = 'none';
-        allowBtn.style.borderRadius = '6px';
-        allowBtn.style.cursor = 'pointer';
-        allowBtn.style.fontWeight = '700';
-
-        allowBtn.addEventListener('click', () => {
-            // Open all prompts with delay
-            promptsn.forEach((link, index) => {
-                setTimeout(() => {
-                    window.open(link, '_blank');
-                }, index * 1500); // smaller delay for faster opening
-            });
-
-            // Remove both notifications
-            confirmPopup.remove();
-            notification.remove();
+        promptsn.forEach((link, index) => {
+            setTimeout(() => {
+                const win = window.open(link, '_blank');
+                if (!win) {
+                    alert('Popup blocked! Please allow popups for this site.');
+                }
+            }, index * 6000); // 1 second delay between tabs
         });
 
-        confirmPopup.appendChild(msg);
-        confirmPopup.appendChild(allowBtn);
-        document.body.appendChild(confirmPopup);
+        // Remove notification after clicking
+        notification.remove();
     });
 
     notification.appendChild(text);
@@ -204,14 +188,10 @@ function showTopNotification(message) {
 
 // Show notification when page loads
 document.addEventListener('DOMContentLoaded', () => {
-    showTopNotification('🎯 Run all prompts with a single click — Start Here 👉👉👉👉');
+    showTopNotification('🎯 Run all prompts with a single click — Start Here 👉');
 });
 
-
-
-
-
-// end
+// // end
 document.getElementById('runAllPromptsBtn').addEventListener('click', () => {
     prompts.forEach((p, index) => {
         setTimeout(() => {
