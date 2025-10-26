@@ -38,6 +38,85 @@ const prompts = [
     },
 
 ];
+// new code
+// Define your prompt links
+const promptsn = [
+    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22',
+    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=21',
+    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=20',
+    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=19',
+    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18'
+];
+
+// Function to create top notification
+function showTopNotification(message) {
+    if (document.getElementById('topNotification')) return;
+
+    const notification = document.createElement('div');
+    notification.id = 'topNotification';
+    notification.style.position = 'fixed';
+    notification.style.top = '0';
+    notification.style.left = '0';
+    notification.style.width = '100%';
+    notification.style.background = '#0e0e0eff';
+    notification.style.color = 'white';
+    notification.style.display = 'flex';
+    notification.style.justifyContent = 'space-between';
+    notification.style.alignItems = 'center';
+    notification.style.padding = '12px 20px';
+    notification.style.zIndex = '9999';
+    notification.style.fontWeight = '600';
+    notification.style.boxShadow = '0 4px 10px rgba(0,0,0,0.25)';
+    notification.style.fontSize = '16px';
+
+
+  
+
+    const text = document.createElement('span');
+    text.textContent = message;
+
+    const btn = document.createElement('button');
+    btn.textContent = 'Run All Prompts';
+    btn.style.background = 'white';
+    btn.style.color = '#0ea5e9';
+    btn.style.border = 'none';
+    btn.style.padding = '8px 14px';
+    
+    btn.style.borderRadius = '6px';
+    btn.style.cursor = 'pointer';
+    btn.style.fontWeight = '700';
+    btn.addEventListener('click', () => {
+        promptsn.forEach((link, index) => {
+            setTimeout(() => {
+                window.open(link, '_blank');
+            }, index * 6000); // Slight delay between opening tabs
+        });
+        // Remove notification after clicking
+        const notification = document.getElementById('topNotification');
+    if (notification) notification.remove();
+        
+    });
+
+    notification.appendChild(text);
+    notification.appendChild(btn);
+    document.body.appendChild(notification);
+}
+
+
+// Show notification when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    showTopNotification('🎯 Run all prompts with a single click — Start Here 👉👉👉👉');
+});
+
+
+// end
+document.getElementById('runAllPromptsBtn').addEventListener('click', () => {
+    prompts.forEach((p, index) => {
+        setTimeout(() => {
+            window.open(p.externalLink, '_blank');
+        }, index * 6000); // delay between tabs
+    });
+});
 
 function renderCards() {
     const grid = document.getElementById('cardsGrid');
