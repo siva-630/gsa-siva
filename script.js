@@ -169,8 +169,8 @@ function showTopNotification(message) {
 
 // Show notification when page loads
 document.addEventListener('DOMContentLoaded', () => {
-    showTopNotification('🎯 Run all prompts with a single click  — Start Here  👉👉👉');
-        showTopNotification('🎯 wait for run prompt gemini');
+    showTopNotification('🎯 Run all prompts with a single click  wait for run prompt gemini — Start Here  👉👉👉');
+        
         
 });
 
