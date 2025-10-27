@@ -117,48 +117,39 @@ const promptsn = [
   'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22'
 ];
 
-// ✅ Detect if device is mobile
+// ✅ Detect mobile
 function isMobileDevice() {
   return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 }
 
-// ✅ Create modern modal popup for mobile users
+// ✅ Modal for permission (mobile only)
 function showPopupPermissionModal(runPromptsCallback) {
   if (!isMobileDevice()) {
     runPromptsCallback();
     return;
   }
 
-  // Prevent multiple modals
   if (document.getElementById('popupPermissionModal')) return;
 
   const overlay = document.createElement('div');
   overlay.id = 'popupPermissionModal';
-  overlay.style.position = 'fixed';
-  overlay.style.top = '0';
-  overlay.style.left = '0';
-  overlay.style.width = '100%';
-  overlay.style.height = '100%';
-  overlay.style.background = 'rgba(0,0,0,0.6)';
-  overlay.style.display = 'flex';
-  overlay.style.justifyContent = 'center';
-  overlay.style.alignItems = 'center';
-  overlay.style.zIndex = '10000';
-  overlay.style.backdropFilter = 'blur(6px)';
-  overlay.style.transition = 'opacity 0.3s ease';
-  overlay.style.opacity = '0';
+  overlay.style.cssText = `
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 10000; backdrop-filter: blur(6px);
+    opacity: 0; transition: opacity 0.3s ease;
+  `;
 
   const modal = document.createElement('div');
-  modal.style.background = 'white';
-  modal.style.color = '#0e0e0e';
-  modal.style.width = '85%';
-  modal.style.maxWidth = '360px';
-  modal.style.borderRadius = '16px';
-  modal.style.padding = '24px';
-  modal.style.textAlign = 'center';
-  modal.style.boxShadow = '0 8px 25px rgba(0,0,0,0.3)';
-  modal.style.transform = 'translateY(20px)';
-  modal.style.transition = 'all 0.3s ease';
+  modal.style.cssText = `
+    background: white; color: #0e0e0e;
+    width: 85%; max-width: 360px; border-radius: 16px;
+    padding: 24px; text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+  `;
 
   modal.innerHTML = `
     <h2 style="font-size:20px;font-weight:700;margin-bottom:10px;">⚠️ Allow Multiple Tabs</h2>
@@ -181,13 +172,11 @@ function showPopupPermissionModal(runPromptsCallback) {
   overlay.appendChild(modal);
   document.body.appendChild(overlay);
 
-  // Animate fade-in
   setTimeout(() => {
     overlay.style.opacity = '1';
     modal.style.transform = 'translateY(0)';
   }, 50);
 
-  // Handle Allow
   modal.querySelector('#allowPopupBtn').addEventListener('click', () => {
     overlay.style.opacity = '0';
     modal.style.transform = 'translateY(30px)';
@@ -196,7 +185,6 @@ function showPopupPermissionModal(runPromptsCallback) {
     runPromptsCallback();
   });
 
-  // Handle Cancel
   modal.querySelector('#cancelPopupBtn').addEventListener('click', () => {
     overlay.style.opacity = '0';
     modal.style.transform = 'translateY(30px)';
@@ -204,27 +192,33 @@ function showPopupPermissionModal(runPromptsCallback) {
   });
 }
 
-// ✅ Show "Run All Prompts" top bar
+// ✅ Run all prompts — open multiple tabs instantly
+function runAllPrompts() {
+  let opened = 0;
+  promptsn.forEach((link) => {
+    const win = window.open(link, '_blank');
+    if (win) opened++;
+  });
+
+  if (opened === 0) {
+    alert('⚠️ Please enable pop-ups in your browser and try again.');
+  }
+}
+
+// ✅ Show top notification
 function showTopNotification(message) {
   if (document.getElementById('topNotification')) return;
 
   const notification = document.createElement('div');
   notification.id = 'topNotification';
-  notification.style.position = 'fixed';
-  notification.style.top = '0';
-  notification.style.left = '0';
-  notification.style.width = '100%';
-  notification.style.background = 'linear-gradient(90deg, #0ea5e9, #3b82f6)';
-  notification.style.color = 'white';
-  notification.style.display = 'flex';
-  notification.style.justifyContent = 'space-between';
-  notification.style.alignItems = 'center';
-  notification.style.padding = '12px 20px';
-  notification.style.zIndex = '9998';
-  notification.style.fontWeight = '600';
-  notification.style.fontSize = '16px';
-  notification.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
-  notification.style.borderRadius = '0 0 10px 10px';
+  notification.style.cssText = `
+    position: fixed; top: 0; left: 0; width: 100%;
+    background: linear-gradient(90deg, #0ea5e9, #3b82f6);
+    color: white; display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 20px; z-index: 9998; font-weight: 600;
+    font-size: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border-radius: 0 0 10px 10px;
+  `;
 
   const text = document.createElement('span');
   text.textContent = message;
@@ -232,14 +226,11 @@ function showTopNotification(message) {
 
   const btn = document.createElement('button');
   btn.textContent = 'Run All Prompts';
-  btn.style.background = 'white';
-  btn.style.color = '#0ea5e9';
-  btn.style.border = 'none';
-  btn.style.padding = '10px 18px';
-  btn.style.borderRadius = '8px';
-  btn.style.cursor = 'pointer';
-  btn.style.fontWeight = '700';
-  btn.style.transition = 'all 0.3s ease';
+  btn.style.cssText = `
+    background:white;color:#0ea5e9;border:none;
+    padding:10px 18px;border-radius:8px;cursor:pointer;
+    font-weight:700;transition:all 0.3s ease;
+  `;
 
   btn.addEventListener('mouseover', () => {
     btn.style.transform = 'scale(1.05)';
@@ -250,20 +241,10 @@ function showTopNotification(message) {
     btn.style.background = 'white';
   });
 
-  // ✅ When button clicked
+  // ✅ On click
   btn.addEventListener('click', () => {
-    showPopupPermissionModal(() => {
-      // Run all prompts after user allows
-      promptsn.forEach((link, index) => {
-        setTimeout(() => {
-          const win = window.open(link, '_blank');
-          if (!win) {
-            alert('⚠️ Please enable pop-ups in your browser and try again.');
-          }
-        }, index * 6000);
-      });
-      notification.remove();
-    });
+    showPopupPermissionModal(runAllPrompts);
+    notification.remove();
   });
 
   notification.appendChild(text);
@@ -271,7 +252,7 @@ function showTopNotification(message) {
   document.body.appendChild(notification);
 }
 
-// ✅ Initialize when page loads
+// ✅ On load
 document.addEventListener('DOMContentLoaded', () => {
   showTopNotification('🎯 Run all prompts with a single click — Start Here 👉');
 });
