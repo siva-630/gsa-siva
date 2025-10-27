@@ -203,7 +203,7 @@ function runAllPrompts() {
   promptsn.forEach((link, index) => {
     setTimeout(() => {
       window.open(link, '_blank');
-    }, index * 40000);
+    }, index * 30000);
   });
 
   // Remove notification bar
@@ -233,7 +233,7 @@ document.getElementById('runAllPromptsBtn').addEventListener('click', () => {
     prompts.forEach((p, index) => {
         setTimeout(() => {
             window.open(p.externalLink, '_blank');
-        }, index * 50000); // delay between tabs
+        }, index * 30000); // delay between tabs
     });
 });
 
