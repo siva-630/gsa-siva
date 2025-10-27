@@ -233,7 +233,7 @@ document.getElementById('runAllPromptsBtn').addEventListener('click', () => {
     prompts.forEach((p, index) => {
         setTimeout(() => {
             window.open(p.externalLink, '_blank');
-        }, index * 6000); // delay between tabs
+        }, index * 60000); // delay between tabs
     });
 });
 
