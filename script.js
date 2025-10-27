@@ -40,175 +40,79 @@ const prompts = [
 ];
 // new code
 // Define your prompt links
-// const promptsn = [
-//     'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18',
-//     'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=21',
-//     'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=20',
-//     'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=19',
-//     'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22'
-// ];
+const promptsn = [
+    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18',
+    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=21',
+    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=20',
+    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=19',
+    'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22'
+];
 
-// // Function to create top notification
-// function showTopNotification(message) {
-//     if (document.getElementById('topNotification')) return;
+// Function to create top notification
+function showTopNotification(message) {
+    if (document.getElementById('topNotification')) return;
 
-//     const notification = document.createElement('div');
-//     notification.id = 'topNotification';
-//     notification.style.position = 'fixed';
-//     notification.style.top = '0';
-//     notification.style.left = '0';
-//     notification.style.width = '100%';
-//     notification.style.background = '#0e0e0eff';
-//     notification.style.color = 'white';
-//     notification.style.display = 'flex';
-//     notification.style.justifyContent = 'space-between';
-//     notification.style.alignItems = 'center';
-//     notification.style.padding = '12px 20px';
-//     notification.style.zIndex = '9999';
-//     notification.style.fontWeight = '600';
-//     notification.style.boxShadow = '0 4px 10px rgba(0,0,0,0.25)';
-//     notification.style.fontSize = '16px';
+    const notification = document.createElement('div');
+    notification.id = 'topNotification';
+    notification.style.position = 'fixed';
+    notification.style.top = '0';
+    notification.style.left = '0';
+    notification.style.width = '100%';
+    notification.style.background = '#0e0e0eff';
+    notification.style.color = 'white';
+    notification.style.display = 'flex';
+    notification.style.justifyContent = 'space-between';
+    notification.style.alignItems = 'center';
+    notification.style.padding = '12px 20px';
+    notification.style.zIndex = '9999';
+    notification.style.fontWeight = '600';
+    notification.style.boxShadow = '0 4px 10px rgba(0,0,0,0.25)';
+    notification.style.fontSize = '16px';
 
 
   
 
-//     const text = document.createElement('span');
-//     text.textContent = message;
+    const text = document.createElement('span');
+    text.textContent = message;
 
-//     const btn = document.createElement('button');
-//     btn.textContent = 'Run All Prompts';
-//     btn.style.background = 'white';
-//     btn.style.color = '#0ea5e9';
-//     btn.style.border = 'none';
-//     btn.style.padding = '8px 14px';
+    const btn = document.createElement('button');
+    btn.textContent = 'Run All Prompts';
+    btn.style.background = 'white';
+    btn.style.color = '#0ea5e9';
+    btn.style.border = 'none';
+    btn.style.padding = '8px 14px';
     
-//     btn.style.borderRadius = '6px';
-//     btn.style.cursor = 'pointer';
-//     btn.style.fontWeight = '700';
-//     btn.addEventListener('click', () => {
-//         promptsn.forEach((link, index) => {
-//             setTimeout(() => {
-//                 window.open(link, '_blank');
-//             }, index * 6000); // Slight delay between opening tabs
-//         });
-//         // Remove notification after clicking
-//         const notification = document.getElementById('topNotification');
-//     if (notification) notification.remove();
+    btn.style.borderRadius = '6px';
+    btn.style.cursor = 'pointer';
+    btn.style.fontWeight = '700';
+    btn.addEventListener('click', () => {
+        promptsn.forEach((link, index) => {
+            setTimeout(() => {
+                window.open(link, '_blank');
+            }, index * 6000); // Slight delay between opening tabs
+        });
+        // Remove notification after clicking
+        const notification = document.getElementById('topNotification');
+    if (notification) notification.remove();
         
-//     });
+    });
 
-//     notification.appendChild(text);
-//     notification.appendChild(btn);
-//     document.body.appendChild(notification);
-// }
-
-
-// // Show notification when page loads
-// document.addEventListener('DOMContentLoaded', () => {
-//     showTopNotification('🎯 Run all prompts with a single click — Start Here 👉👉👉👉');
-// });
-
-
-
-
-
-
-
-
-const promptsn = [
-  'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18',
-  'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=21',
-  'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=20',
-  'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=19',
-  'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22'
-];
-
-function isMobile() {
-  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    notification.appendChild(text);
+    notification.appendChild(btn);
+    document.body.appendChild(notification);
 }
 
-function runAllPrompts() {
-  promptsn.forEach((url, i) => {
-    setTimeout(() => window.open(url, '_blank'), i * 1500);
-  });
-}
 
-function showMobilePopupPermission() {
-  if (!isMobile()) return;
-
-  // Create overlay UI
-  const overlay = document.createElement('div');
-  overlay.style.cssText = `
-    position:fixed;inset:0;background:rgba(0,0,0,0.6);
-    display:flex;flex-direction:column;justify-content:center;align-items:center;
-    z-index:99999;font-family:sans-serif;
-  `;
-
-  const box = document.createElement('div');
-  box.style.cssText = `
-    background:white;color:#111827;border-radius:16px;
-    padding:24px 20px;width:85%;max-width:380px;text-align:center;
-    box-shadow:0 8px 24px rgba(0,0,0,0.25);
-  `;
-
-  box.innerHTML = `
-    <h2 style="font-size:20px;font-weight:700;margin-bottom:10px;">⚙️ Allow Multiple Tabs</h2>
-    <p style="font-size:15px;line-height:1.5;margin-bottom:20px;">
-      To run all prompts, please allow pop-ups in your browser.<br><br>
-      Tap <strong>"Allow Multiple Tabs"</strong> below.<br>
-      Chrome may show a <strong>"Pop-ups blocked"</strong> bar at the top — choose
-      <strong>"Always allow pop-ups and redirects"</strong>.<br><br>
-      Once allowed, tap <strong>"Run All Prompts"</strong>.
-    </p>
-
-    <button id="allowBtn" style="
-      background:linear-gradient(90deg,#0ea5e9,#3b82f6);
-      color:white;border:none;padding:12px 22px;border-radius:10px;
-      font-weight:700;margin-bottom:12px;width:100%;
-      box-shadow:0 4px 10px rgba(59,130,246,0.4);cursor:pointer;
-    ">Allow Multiple Tabs</button>
-
-    <button id="runBtn" disabled style="
-      background:#9ca3af;color:white;border:none;padding:12px 22px;border-radius:10px;
-      font-weight:700;width:100%;cursor:not-allowed;
-    ">Run All Prompts</button>
-  `;
-
-  overlay.appendChild(box);
-  document.body.appendChild(overlay);
-
-  const allowBtn = document.getElementById('allowBtn');
-  const runBtn = document.getElementById('runBtn');
-
-  allowBtn.addEventListener('click', () => {
-    // Try a single popup — this triggers Chrome's real permission bar
-    const win = window.open('', '_blank');
-    if (win) {
-      win.close();
-      // Success: Popups already allowed
-      allowBtn.textContent = "✅ Pop-ups Enabled";
-      allowBtn.style.background = "#22c55e";
-      runBtn.disabled = false;
-      runBtn.style.background = "linear-gradient(90deg,#0ea5e9,#3b82f6)";
-      runBtn.style.cursor = "pointer";
-    } else {
-      // Blocked → Chrome shows the "Pop-ups blocked" bar
-      alert("👉 Check the top of your browser and tap 'Always allow pop-ups and redirects'. Then press this button again.");
-    }
-  });
-
-  runBtn.addEventListener('click', () => {
-    if (runBtn.disabled) return;
-    overlay.remove();
-    runAllPrompts();
-  });
-}
-
+// Show notification when page loads
 document.addEventListener('DOMContentLoaded', () => {
-  if (isMobile()) {
-    showMobilePopupPermission();
-  }
+    showTopNotification('🎯 Run all prompts with a single click — Start Here 👉👉👉👉');
 });
+
+
+
+
+
+
 
 
 
