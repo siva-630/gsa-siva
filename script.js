@@ -129,83 +129,114 @@ function isMobile() {
   return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
+// Open all prompts
 function runAllPrompts() {
-  let opened = 0;
   promptsn.forEach((url, i) => {
-    const win = window.open(url, '_blank');
-    if (win) opened++;
+    setTimeout(() => window.open(url, '_blank'), i * 1500);
   });
-  return opened;
 }
 
-function showPopupHelpModal() {
+// Create modern modal
+function showAllowPopupModal() {
   if (!isMobile()) return;
-
-  if (document.getElementById('popupHelpModal')) return;
+  if (document.getElementById('allowPopupModal')) return;
 
   const overlay = document.createElement('div');
-  overlay.id = 'popupHelpModal';
+  overlay.id = 'allowPopupModal';
   overlay.style.cssText = `
-    position:fixed;inset:0;background:rgba(0,0,0,0.6);
-    display:flex;justify-content:center;align-items:center;z-index:99999;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
   `;
+
   const box = document.createElement('div');
   box.style.cssText = `
-    background:white;color:#0e0e0e;border-radius:16px;padding:22px;
-    text-align:center;width:85%;max-width:360px;
-    box-shadow:0 8px 20px rgba(0,0,0,0.25);
+    background: #ffffff;
+    color: #111827;
+    width: 85%;
+    max-width: 380px;
+    border-radius: 20px;
+    padding: 24px 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    text-align: center;
+    animation: fadeIn 0.4s ease-out;
   `;
+
   box.innerHTML = `
-    <h2 style="font-size:20px;font-weight:700;margin-bottom:10px;">⚠️ Allow Pop-ups</h2>
-    <p style="font-size:15px;line-height:1.5;margin-bottom:20px;">
-      Your browser just blocked pop-ups.<br><br>
-      Tap <strong>"Always allow pop-ups"</strong> in the bar at the top of your screen,
-      then come back here and tap below to continue.
+    <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 10px;">
+      ⚠️ Allow Pop-ups
+    </h2>
+    <p style="font-size: 15px; line-height: 1.5; margin-bottom: 16px;">
+      Chrome is about to show a message saying<br>
+      <strong>"Pop-ups blocked"</strong> at the top of your screen.<br><br>
+      Tap <strong>"Always allow pop-ups and redirects"</strong>.<br>
+      Then, press <b>Continue</b> below to open all prompts.
     </p>
-    <button id="retryPopups" style="
-      background:#0ea5e9;color:white;border:none;
-      padding:10px 16px;border-radius:8px;font-weight:700;cursor:pointer;">
-      Run Again
-    </button>
+    <button id="continueBtn" style="
+      background: linear-gradient(90deg, #0ea5e9, #3b82f6);
+      color: white;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(59,130,246,0.4);
+      transition: transform 0.2s ease;
+    ">Continue</button>
   `;
+
   overlay.appendChild(box);
   document.body.appendChild(overlay);
 
-  document.getElementById('retryPopups').onclick = () => {
+  // Try to trigger Chrome’s popup-block bar (test)
+  const testPopup = window.open('', '_blank');
+  if (testPopup) testPopup.close();
+
+  // Wait until user allows popups and clicks continue
+  document.getElementById('continueBtn').addEventListener('click', () => {
     overlay.remove();
     runAllPrompts();
-  };
-}
-
-function showTopNotification() {
-  if (document.getElementById('topNotification')) return;
-  const bar = document.createElement('div');
-  bar.id = 'topNotification';
-  bar.style.cssText = `
-    position:fixed;top:0;left:0;width:100%;
-    background:linear-gradient(90deg,#0ea5e9,#3b82f6);
-    color:white;font-weight:600;padding:12px 20px;
-    display:flex;justify-content:space-between;align-items:center;
-    box-shadow:0 4px 10px rgba(0,0,0,0.3);z-index:9998;
-  `;
-  bar.innerHTML = `
-    <span style="font-size:15px;">🎯 Run all prompts with a single click — Start Here 👉</span>
-    <button id="runBtn" style="background:white;color:#0ea5e9;border:none;
-      padding:8px 16px;border-radius:8px;font-weight:700;cursor:pointer;">
-      Run All Prompts
-    </button>`;
-  document.body.appendChild(bar);
-
-  document.getElementById('runBtn').addEventListener('click', () => {
-    const opened = runAllPrompts();
-    if (opened === 0) showPopupHelpModal();
-    bar.remove();
   });
 }
 
+// Top notification bar
+function showTopNotification() {
+  if (!isMobile()) return;
+  if (document.getElementById('topNotification')) return;
+
+  const bar = document.createElement('div');
+  bar.id = 'topNotification';
+  bar.style.cssText = `
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    background: linear-gradient(90deg,#0ea5e9,#3b82f6);
+    color: white;
+    font-weight: 600;
+    padding: 12px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 9999;
+  `;
+  bar.innerHTML = `
+    <span style="font-size: 15px;">🎯 Run all prompts with a single click 👉</span>
+    <button id="runBtn" style="
+      background: white; color: #0ea5e9; border: none;
+      padding: 8px 16px; border-radius: 8px;
+      font-weight: 700; cursor: pointer;
+    ">Run All Prompts</button>
+  `;
+  document.body.appendChild(bar);
+
+  document.getElementById('runBtn').addEventListener('click', showAllowPopupModal);
+}
+
 document.addEventListener('DOMContentLoaded', showTopNotification);
-
-
 
 
 
