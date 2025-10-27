@@ -114,11 +114,11 @@ const prompts = [
 
 
 const promptsn = [
-  'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18',
+  'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22',
   'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=21',
   'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=20',
   'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=19',
-  'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22'
+  'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18'
 ];
 
 // Create top bar notification
@@ -203,7 +203,7 @@ function runAllPrompts() {
   promptsn.forEach((link, index) => {
     setTimeout(() => {
       window.open(link, '_blank');
-    }, index * 10000);
+    }, index * 60,000);
   });
 
   // Remove notification bar
