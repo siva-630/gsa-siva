@@ -120,9 +120,10 @@ function isMobileDevice() {
     return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 }
 
-// ✅ Create mobile-only notification
+// ✅ Show mobile popup notice (only once per session)
 function showMobilePopupNotice() {
-    if (!isMobileDevice() || document.getElementById('mobilePopupNotice')) return;
+    if (!isMobileDevice()) return;
+    if (sessionStorage.getItem('popupNoticeShown')) return; // show only once per session
 
     const banner = document.createElement('div');
     banner.id = 'mobilePopupNotice';
@@ -133,35 +134,40 @@ function showMobilePopupNotice() {
     banner.style.background = 'linear-gradient(90deg, #0ea5e9, #3b82f6)';
     banner.style.color = 'white';
     banner.style.textAlign = 'center';
-    banner.style.padding = '14px 16px';
+    banner.style.padding = '16px 18px';
     banner.style.zIndex = '9999';
     banner.style.fontWeight = '600';
     banner.style.fontSize = '15px';
-    banner.style.boxShadow = '0 -4px 10px rgba(0,0,0,0.25)';
+    banner.style.boxShadow = '0 -4px 12px rgba(0,0,0,0.25)';
     banner.style.borderRadius = '10px 10px 0 0';
     banner.style.transition = 'transform 0.4s ease';
     banner.style.transform = 'translateY(100%)';
+    banner.style.lineHeight = '1.5';
 
     banner.innerHTML = `
-        ⚠️ Please allow <strong>pop-ups</strong> when prompted.<br>
-        This is required to open all prompts in new tabs.
+        ⚠️ <strong>Important:</strong> Please allow <strong>pop-ups</strong> in your browser settings.<br>
+        This is required to open all prompts in new tabs successfully.<br>
+        <small style="opacity:0.9;">(This message will only appear once per visit)</small>
     `;
 
     document.body.appendChild(banner);
 
-    // Slide-in animation
+    // Slide in
     setTimeout(() => {
         banner.style.transform = 'translateY(0)';
     }, 300);
 
-    // Auto-hide after 8 seconds
+    // Make it stay longer — 20 seconds visible
     setTimeout(() => {
         banner.style.transform = 'translateY(100%)';
         setTimeout(() => banner.remove(), 500);
-    }, 8000);
+    }, 20000);
+
+    // Mark as shown for this session
+    sessionStorage.setItem('popupNoticeShown', 'true');
 }
 
-// ✅ Show "Run All Prompts" bar (works on all devices)
+// ✅ Top "Run All Prompts" bar
 function showTopNotification(message) {
     if (document.getElementById('topNotification')) return;
 
@@ -207,7 +213,7 @@ function showTopNotification(message) {
     });
 
     btn.addEventListener('click', () => {
-        // Show popup notice on mobile before opening tabs
+        // Show popup reminder on mobile
         showMobilePopupNotice();
 
         const confirmOpen = confirm("👉 This will open multiple tabs. Please allow popups if asked.");
@@ -217,7 +223,7 @@ function showTopNotification(message) {
             setTimeout(() => {
                 const win = window.open(link, '_blank');
                 if (!win) {
-                    alert('⚠️ Please enable pop-ups and try again.');
+                    alert('⚠️ Please enable pop-ups in your browser and try again.');
                 }
             }, index * 6000);
         });
@@ -230,7 +236,7 @@ function showTopNotification(message) {
     document.body.appendChild(notification);
 }
 
-// ✅ Show top bar when page loads
+// ✅ Show top notification when page loads
 document.addEventListener('DOMContentLoaded', () => {
     showTopNotification('🎯 Run all prompts with a single click — Start Here 👉');
 });
