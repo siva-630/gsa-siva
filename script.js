@@ -125,67 +125,58 @@ const promptsn = [
   'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22'
 ];
 
-// detect mobile
 function isMobile() {
   return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
 
-// small delay helper
-function wait(ms) {
-  return new Promise(res => setTimeout(res, ms));
-}
-
-// main run function
-async function handleRunAll() {
-  if (!isMobile()) {
-    runAllPrompts();
-    return;
-  }
-
-  showPopupModal(); // show modal
-
-  // Try to open one popup to trigger browser permission bar
-  let testPopup = window.open('about:blank', '_blank');
-
-  // if popup blocked
-  if (!testPopup) {
-    console.log('Popups blocked; waiting for user to allow...');
-  } else {
-    // if opened, close it quickly and proceed
-    testPopup.close();
-    document.getElementById('popupModal')?.remove();
-    runAllPrompts();
-    return;
-  }
-
-  // Poll every second to detect when popups are allowed
-  let allowed = false;
-  for (let i = 0; i < 10; i++) { // try for ~10s
-    await wait(1000);
-    let check = window.open('', '_blank');
-    if (check) {
-      check.close();
-      allowed = true;
-      break;
-    }
-  }
-
-  if (allowed) {
-    document.getElementById('popupModal')?.remove();
-    runAllPrompts();
-  } else {
-    alert('Please enable pop-ups manually and try again.');
-  }
-}
-
-// open all prompts
 function runAllPrompts() {
+  let opened = 0;
   promptsn.forEach((url, i) => {
-    setTimeout(() => window.open(url, '_blank'), i * 800);
+    const win = window.open(url, '_blank');
+    if (win) opened++;
   });
+  return opened;
 }
 
-// show top bar
+function showPopupHelpModal() {
+  if (!isMobile()) return;
+
+  if (document.getElementById('popupHelpModal')) return;
+
+  const overlay = document.createElement('div');
+  overlay.id = 'popupHelpModal';
+  overlay.style.cssText = `
+    position:fixed;inset:0;background:rgba(0,0,0,0.6);
+    display:flex;justify-content:center;align-items:center;z-index:99999;
+  `;
+  const box = document.createElement('div');
+  box.style.cssText = `
+    background:white;color:#0e0e0e;border-radius:16px;padding:22px;
+    text-align:center;width:85%;max-width:360px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.25);
+  `;
+  box.innerHTML = `
+    <h2 style="font-size:20px;font-weight:700;margin-bottom:10px;">⚠️ Allow Pop-ups</h2>
+    <p style="font-size:15px;line-height:1.5;margin-bottom:20px;">
+      Your browser just blocked pop-ups.<br><br>
+      Tap <strong>"Always allow pop-ups"</strong> in the bar at the top of your screen,
+      then come back here and tap below to continue.
+    </p>
+    <button id="retryPopups" style="
+      background:#0ea5e9;color:white;border:none;
+      padding:10px 16px;border-radius:8px;font-weight:700;cursor:pointer;">
+      Run Again
+    </button>
+  `;
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  document.getElementById('retryPopups').onclick = () => {
+    overlay.remove();
+    runAllPrompts();
+  };
+}
+
 function showTopNotification() {
   if (document.getElementById('topNotification')) return;
   const bar = document.createElement('div');
@@ -205,50 +196,14 @@ function showTopNotification() {
     </button>`;
   document.body.appendChild(bar);
 
-  document.getElementById('runBtn').addEventListener('click', handleRunAll);
+  document.getElementById('runBtn').addEventListener('click', () => {
+    const opened = runAllPrompts();
+    if (opened === 0) showPopupHelpModal();
+    bar.remove();
+  });
 }
 
-// show modal
-function showPopupModal() {
-  if (document.getElementById('popupModal')) return;
-
-  const overlay = document.createElement('div');
-  overlay.id = 'popupModal';
-  overlay.style.cssText = `
-    position:fixed;inset:0;background:rgba(0,0,0,0.6);
-    display:flex;justify-content:center;align-items:center;
-    z-index:10000;
-  `;
-  const box = document.createElement('div');
-  box.style.cssText = `
-    background:white;border-radius:16px;padding:24px;
-    text-align:center;max-width:320px;width:85%;
-    box-shadow:0 8px 24px rgba(0,0,0,0.25);
-  `;
-  box.innerHTML = `
-    <h2 style="margin-bottom:10px;">⚠️ Allow Pop-ups</h2>
-    <p style="font-size:15px;line-height:1.4;">
-      Your browser just blocked pop-ups.<br><br>
-      Tap <strong>"Always allow pop-ups"</strong> at the top of your screen.<br>
-      This window will close automatically once allowed.
-    </p>
-    <div style="margin-top:20px;width:28px;height:28px;border:4px solid #0ea5e9;
-      border-top-color:transparent;border-radius:50%;margin-inline:auto;
-      animation:spin 1s linear infinite;"></div>
-  `;
-  overlay.appendChild(box);
-  document.body.appendChild(overlay);
-
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes spin {to{transform:rotate(360deg);}}
-  `;
-  document.head.appendChild(style);
-}
-
-// start
 document.addEventListener('DOMContentLoaded', showTopNotification);
-
 
 
 
