@@ -115,8 +115,6 @@ const prompts = [
 
 
 
-
-
 const promptsn = [
   'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18',
   'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=21',
@@ -135,73 +133,82 @@ function runAllPrompts() {
   });
 }
 
-function showAllowPopupModal() {
+function showMobilePopupPermission() {
   if (!isMobile()) return;
 
-  // Create overlay
+  // Create overlay UI
   const overlay = document.createElement('div');
   overlay.style.cssText = `
     position:fixed;inset:0;background:rgba(0,0,0,0.6);
-    display:flex;justify-content:center;align-items:center;z-index:99999;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    z-index:99999;font-family:sans-serif;
   `;
+
   const box = document.createElement('div');
   box.style.cssText = `
-    background:white;color:#111827;border-radius:16px;padding:24px 20px;
-    width:85%;max-width:360px;text-align:center;
+    background:white;color:#111827;border-radius:16px;
+    padding:24px 20px;width:85%;max-width:380px;text-align:center;
     box-shadow:0 8px 24px rgba(0,0,0,0.25);
-    font-family:sans-serif;
   `;
+
   box.innerHTML = `
-    <h2 style="font-size:20px;font-weight:700;margin-bottom:10px;">
-      ⚠️ Allow Pop-ups
-    </h2>
-    <p style="font-size:15px;line-height:1.5;margin-bottom:16px;">
-      A <strong>“Pop-ups blocked”</strong> message will appear
-      at the top of your browser.<br><br>
-      Tap <strong>“Always allow pop-ups and redirects”</strong>.<br>
-      Then return here and press Continue below.
+    <h2 style="font-size:20px;font-weight:700;margin-bottom:10px;">⚙️ Allow Multiple Tabs</h2>
+    <p style="font-size:15px;line-height:1.5;margin-bottom:20px;">
+      To run all prompts, please allow pop-ups in your browser.<br><br>
+      Tap <strong>"Allow Multiple Tabs"</strong> below.<br>
+      Chrome may show a <strong>"Pop-ups blocked"</strong> bar at the top — choose
+      <strong>"Always allow pop-ups and redirects"</strong>.<br><br>
+      Once allowed, tap <strong>"Run All Prompts"</strong>.
     </p>
-    <button id="continueBtn" style="
+
+    <button id="allowBtn" style="
       background:linear-gradient(90deg,#0ea5e9,#3b82f6);
       color:white;border:none;padding:12px 22px;border-radius:10px;
-      font-weight:700;cursor:pointer;box-shadow:0 4px 10px rgba(59,130,246,0.4);
-    ">Continue</button>
+      font-weight:700;margin-bottom:12px;width:100%;
+      box-shadow:0 4px 10px rgba(59,130,246,0.4);cursor:pointer;
+    ">Allow Multiple Tabs</button>
+
+    <button id="runBtn" disabled style="
+      background:#9ca3af;color:white;border:none;padding:12px 22px;border-radius:10px;
+      font-weight:700;width:100%;cursor:not-allowed;
+    ">Run All Prompts</button>
   `;
+
   overlay.appendChild(box);
   document.body.appendChild(overlay);
 
-  // 🔹 Trigger Chrome’s real “Pop-ups blocked” bar
-  const testWin = window.open('', '_blank');
-  if (testWin) testWin.close(); // if not blocked, silently close
+  const allowBtn = document.getElementById('allowBtn');
+  const runBtn = document.getElementById('runBtn');
 
-  document.getElementById('continueBtn').addEventListener('click', () => {
+  allowBtn.addEventListener('click', () => {
+    // Try a single popup — this triggers Chrome's real permission bar
+    const win = window.open('', '_blank');
+    if (win) {
+      win.close();
+      // Success: Popups already allowed
+      allowBtn.textContent = "✅ Pop-ups Enabled";
+      allowBtn.style.background = "#22c55e";
+      runBtn.disabled = false;
+      runBtn.style.background = "linear-gradient(90deg,#0ea5e9,#3b82f6)";
+      runBtn.style.cursor = "pointer";
+    } else {
+      // Blocked → Chrome shows the "Pop-ups blocked" bar
+      alert("👉 Check the top of your browser and tap 'Always allow pop-ups and redirects'. Then press this button again.");
+    }
+  });
+
+  runBtn.addEventListener('click', () => {
+    if (runBtn.disabled) return;
     overlay.remove();
-    runAllPrompts(); // user presses Continue after allowing
+    runAllPrompts();
   });
 }
 
-function showTopBar() {
-  if (!isMobile()) return;
-  const bar = document.createElement('div');
-  bar.style.cssText = `
-    position:fixed;top:0;left:0;width:100%;
-    background:linear-gradient(90deg,#0ea5e9,#3b82f6);
-    color:white;padding:12px 18px;font-weight:600;
-    display:flex;justify-content:space-between;align-items:center;
-    box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:9999;
-  `;
-  bar.innerHTML = `
-    <span style="font-size:15px;">🎯 Run all prompts with one click 👉</span>
-    <button id="runBtn" style="
-      background:white;color:#0ea5e9;border:none;
-      padding:8px 16px;border-radius:8px;font-weight:700;cursor:pointer;
-    ">Run All Prompts</button>
-  `;
-  document.body.appendChild(bar);
-  document.getElementById('runBtn').addEventListener('click', showAllowPopupModal);
-}
-
-document.addEventListener('DOMContentLoaded', showTopBar);
+document.addEventListener('DOMContentLoaded', () => {
+  if (isMobile()) {
+    showMobilePopupPermission();
+  }
+});
 
 
 
