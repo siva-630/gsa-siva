@@ -166,7 +166,7 @@ function tryPopupPermission(button) {
     button.textContent = '✅ Pop-ups Enabled! Running...';
     button.disabled = true;
     button.style.background = '#22c55e';
-    setTimeout(runAllPrompts, 6000);
+    setTimeout(runAllPrompts, 1000);
   } else {
     // ❌ Blocked — Chrome will show “Pop-ups blocked” bar
     showPermissionAlert(button);
@@ -203,7 +203,7 @@ function runAllPrompts() {
   promptsn.forEach((link, index) => {
     setTimeout(() => {
       window.open(link, '_blank');
-    }, index * 6000);
+    }, index * 8000);
   });
 
   // Remove notification bar
