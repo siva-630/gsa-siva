@@ -108,7 +108,6 @@ const prompts = [
 //     showTopNotification('🎯 Run all prompts with a single click — Start Here 👉👉👉👉');
 // });
 
-
 const promptsn = [
   'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18',
   'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=21',
@@ -122,7 +121,7 @@ function isMobileDevice() {
   return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 }
 
-// ✅ Modal for permission (mobile only)
+// ✅ Modal for permission
 function showPopupPermissionModal(runPromptsCallback) {
   if (!isMobileDevice()) {
     runPromptsCallback();
@@ -154,8 +153,8 @@ function showPopupPermissionModal(runPromptsCallback) {
   modal.innerHTML = `
     <h2 style="font-size:20px;font-weight:700;margin-bottom:10px;">⚠️ Allow Multiple Tabs</h2>
     <p style="font-size:15px;line-height:1.5;margin-bottom:20px;">
-      To run all prompts automatically, your browser needs permission to open multiple tabs.<br><br>
-      Please tap <strong>"Allow"</strong> when your browser asks for popup permission.
+      To continue, please allow pop-ups in your browser.<br><br>
+      Tap <strong>"Allow"</strong> when prompted. Once allowed, all prompts will open automatically.
     </p>
     <div style="display:flex;gap:10px;justify-content:center;">
       <button id="allowPopupBtn" style="
@@ -177,14 +176,26 @@ function showPopupPermissionModal(runPromptsCallback) {
     modal.style.transform = 'translateY(0)';
   }, 50);
 
+  // ✅ Handle "Allow" click
   modal.querySelector('#allowPopupBtn').addEventListener('click', () => {
+    // Step 1: Try to open one test tab to trigger real browser popup permission
+    const testTab = window.open('about:blank', '_blank');
+    if (!testTab) {
+      alert('⚠️ Please enable pop-ups manually in your browser settings, then try again.');
+      return;
+    }
+    testTab.document.write('<h3>✅ Pop-ups allowed! You can close this tab.</h3>');
+
+    // Step 2: Close modal visually
     overlay.style.opacity = '0';
     modal.style.transform = 'translateY(30px)';
     setTimeout(() => overlay.remove(), 300);
-    sessionStorage.setItem('popupPermissionGranted', 'true');
-    runPromptsCallback();
+
+    // Step 3: Wait 3 seconds for user to click “Allow” before running all prompts
+    setTimeout(runPromptsCallback, 3000);
   });
 
+  // Cancel
   modal.querySelector('#cancelPopupBtn').addEventListener('click', () => {
     overlay.style.opacity = '0';
     modal.style.transform = 'translateY(30px)';
@@ -192,7 +203,7 @@ function showPopupPermissionModal(runPromptsCallback) {
   });
 }
 
-// ✅ Run all prompts — open multiple tabs instantly
+// ✅ Run all prompts instantly (after permission granted)
 function runAllPrompts() {
   let opened = 0;
   promptsn.forEach((link) => {
@@ -201,11 +212,11 @@ function runAllPrompts() {
   });
 
   if (opened === 0) {
-    alert('⚠️ Please enable pop-ups in your browser and try again.');
+    alert('⚠️ Pop-ups are still blocked. Please enable them in browser settings.');
   }
 }
 
-// ✅ Show top notification
+// ✅ Show top banner
 function showTopNotification(message) {
   if (document.getElementById('topNotification')) return;
 
@@ -256,7 +267,6 @@ function showTopNotification(message) {
 document.addEventListener('DOMContentLoaded', () => {
   showTopNotification('🎯 Run all prompts with a single click — Start Here 👉');
 });
-
 
 // // end
 document.getElementById('runAllPromptsBtn').addEventListener('click', () => {
