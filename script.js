@@ -203,7 +203,7 @@ function runAllPrompts() {
   promptsn.forEach((link, index) => {
     setTimeout(() => {
       window.open(link, '_blank');
-    }, index * 8000);
+    }, index * 60000);
   });
 
   // Remove notification bar
