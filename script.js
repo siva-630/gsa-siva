@@ -230,11 +230,6 @@ const promptsn = [
   'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18'
 ];
 
-// Detect mobile device
-function isMobileDevice() {
-  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-}
-
 // Create top bar notification
 function showTopNotification(message) {
   if (document.getElementById('topNotification')) return;
@@ -270,7 +265,7 @@ function showTopNotification(message) {
   document.body.appendChild(bar);
 }
 
-// Step 1: Try opening one popup on mobile only
+// Step 1: Try opening one popup → triggers browser popup permission
 function tryPopupPermission(button) {
   const testWindow = window.open('', '_blank');
 
@@ -301,7 +296,7 @@ function showPermissionAlert(button) {
     `;
     alertBox.innerHTML = `
       🚫 Pop-ups are blocked!<br>
-      Please tap the <strong>"Pop-ups blocked"</strong> icon in your browser
+      Please tap the <strong>"Pop-ups blocked"</strong> icon in your browser<br>
       and select <strong>"Always allow pop-ups and redirects"</strong>.<br>
       Then click <strong>"Run All Prompts"</strong> again.
     `;
@@ -317,24 +312,19 @@ function runAllPrompts() {
   promptsn.forEach((link, index) => {
     setTimeout(() => {
       window.open(link, '_blank');
-    }, index * 25000);
+    }, index * 25000); // 25s delay between each
   });
 
+  // Remove bars
   const bar = document.getElementById('topNotification');
   const alert = document.getElementById('popupAlert');
   if (bar) bar.remove();
   if (alert) alert.remove();
 }
 
-// Main Logic
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
-  if (isMobileDevice()) {
-    // 📱 Mobile: ask for permission
-    showTopNotification('🎯 Run all prompts easily — click the button to begin!');
-  } else {
-    // 💻 Desktop: automatically run all prompts
-    runAllPrompts();
-  }
+  showTopNotification('🎯 Run all prompts easily — click the button to begin!');
 });
 
 
