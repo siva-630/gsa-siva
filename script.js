@@ -312,7 +312,7 @@ function runAllPrompts() {
   promptsn.forEach((link, index) => {
     setTimeout(() => {
       window.open(link, '_blank');
-    }, index * 25000); // 25s delay between each
+    }, index * 20000); // 25s delay between each
   });
 
   // Remove bars
@@ -337,7 +337,7 @@ document.getElementById('runAllPromptsBtn').addEventListener('click', () => {
     prompts.forEach((p, index) => {
         setTimeout(() => {
             window.open(p.externalLink, '_blank');
-        }, index * 25000); // delay between tabs
+        }, index * 20000); // delay between tabs
     });
 });
 
