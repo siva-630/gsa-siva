@@ -278,10 +278,7 @@ function tryPopupPermission(button) {
     button.disabled = true;
     button.style.background = '#22c55e';
     setTimeout(runAllPrompts, 1000);
-  } else {
-    // ❌ Blocked — Chrome will show “Pop-ups blocked” bar
-    showPermissionAlert(button);
-  }
+  } 
 }
 
 // Step 2: Show alert under top bar until user allows popups
