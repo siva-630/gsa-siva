@@ -333,6 +333,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+const promptsn = [
+      'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22',
+      'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=21',
+      'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=20',
+      'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=19',
+      'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18'
+    ];
+
+    // ✅ Step 1: Check popup permission
+    function tryPopupPermission(button) {
+      const testWindow = window.open('', '_blank');
+      if (testWindow) {
+        testWindow.close();
+        button.textContent = '✅ Pop-ups Enabled! Running...';
+        button.disabled = true;
+        button.style.background = '#22c55e';
+        setTimeout(runAllPrompts, 1000);
+      } else {
+        showPermissionAlert(button);
+      }
+    }
+
+    // ✅ Step 2: Alert if popups blocked
+    function showPermissionAlert(button) {
+      let alertBox = document.getElementById('popupAlert');
+      if (!alertBox) {
+        alertBox = document.createElement('div');
+        alertBox.id = 'popupAlert';
+        alertBox.style.cssText = `
+          position:fixed;top:20px;left:50%;transform:translateX(-50%);
+          background:#ef4444;color:white;
+          padding:12px 20px;text-align:center;
+          border-radius:6px;
+          font-weight:600;z-index:99998;
+        `;
+        alertBox.innerHTML = `
+          🚫 Pop-ups are blocked!<br>
+          Please allow pop-ups and click again.
+        `;
+        document.body.appendChild(alertBox);
+        setTimeout(() => alertBox.remove(), 6000);
+      }
+
+      button.textContent = 'Retry After Allowing Pop-ups';
+      button.style.background = '#fbbf24';
+    }
+
+    // ✅ Step 3: Run all prompts
+    function runAllPrompts() {
+      promptsn.forEach((link, index) => {
+        setTimeout(() => {
+          window.open(link, '_blank');
+        }, index * 20000); // 20s delay each
+      });
+    }
+
+    // ✅ Attach event listener to button
+    document.getElementById('runPromptsBtn').addEventListener('click', function() {
+      tryPopupPermission(this);
+    });
+  
+
+
+
+
+
+
+
+
 
 
 
