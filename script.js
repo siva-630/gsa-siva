@@ -277,7 +277,7 @@ function tryPopupPermission(button) {
     button.textContent = '✅ Pop-ups Enabled! Running...';
     button.disabled = true;
     button.style.background = '#22c55e';
-    setTimeout(runAllPrompts, 5000);
+    setTimeout(runAllPrompts, 1000);
   } 
 }
 
@@ -311,7 +311,7 @@ function runAllPrompts() {
   promptsn.forEach((link, index) => {
     setTimeout(() => {
       window.open(link, '_blank');
-    }, index * 20000); // 25s delay between each
+    }, index * 2000); // 25s delay between each
   });
 
   // Remove bars
@@ -332,13 +332,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // // end
-document.getElementById('runAllPromptsBtn').addEventListener('click', () => {
-    prompts.forEach((p, index) => {
-        setTimeout(() => {
-            window.open(p.externalLink, '_blank');
-        }, index * 20000); // delay between tabs
-    });
-});
+// document.getElementById('runAllPromptsBtn').addEventListener('click', () => {
+//     prompts.forEach((p, index) => {
+//         setTimeout(() => {
+//             window.open(p.externalLink, '_blank');
+//         }, index * 20000); // delay between tabs
+//     });
+// });
 
 
 function renderCards() {
