@@ -28,21 +28,88 @@
                   <path d="M6 14.25L5.741 15.285C5.59267 15.8785 5.28579 16.4206 4.85319 16.8532C4.42059 17.2858 3.87853 17.5927 3.285 17.741L2.25 18L3.285 18.259C3.87853 18.4073 4.42059 18.7142 4.85319 19.1468C5.28579 19.5794 5.59267 20.1215 5.741 20.715L6 21.75L6.259 20.715C6.40725 20.1216 6.71398 19.5796 7.14639 19.147C7.5788 18.7144 8.12065 18.4075 8.714 18.259L9.75 18L8.714 17.741C8.12065 17.5925 7.5788 17.2856 7.14639 16.853C6.71398 16.4204 6.40725 15.8784 6.259 15.285L6 14.25Z" fill="black" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
                   <path d="M6.5 4L6.303 4.5915C6.24777 4.75718 6.15472 4.90774 6.03123 5.03123C5.90774 5.15472 5.75718 5.24777 5.5915 5.303L5 5.5L5.5915 5.697C5.75718 5.75223 5.90774 5.84528 6.03123 5.96877C6.15472 6.09226 6.24777 6.24282 6.303 6.4085L6.5 7L6.697 6.4085C6.75223 6.24282 6.84528 6.09226 6.96877 5.96877C7.09226 5.84528 7.24282 5.75223 7.4085 5.697L8 5.5L7.4085 5.303C7.24282 5.24777 7.09226 5.15472 6.96877 5.03123C6.84528 4.90774 6.75223 4.75718 6.697 4.5915L6.5 4Z" fill="black" stroke="black" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg> 
-<button 
-  onclick="btn()" 
-  style="
-    background:white;
-    color:#0ea5e9;
-    border:none;
-    padding:8px 14px;
-    border-radius:6px;
-    font-weight:700;
-    cursor:pointer;
-    font-size:16px;
-    box-shadow:0 2px 6px rgba(0,0,0,0.15);
-  ">
-  Run All Prompts
-</button>
+  <button 
+    onclick="tryPopupPermission(this)" 
+    style="
+      background:white;
+      color:#0ea5e9;
+      border:none;
+      padding:8px 14px;
+      border-radius:6px;
+      font-weight:700;
+      cursor:pointer;
+      font-size:16px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.15);
+    ">
+    Run All Prompts
+  </button>
+
+  <script>
+    const promptsn = [
+      'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=22',
+      'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=21',
+      'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=20',
+      'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=19',
+      'https://aiskillshouse.com/student/qr-mediator.html?uid=553&promptId=18'
+    ];
+
+    // Step 1: Try opening one popup → triggers browser popup permission
+    function tryPopupPermission(button) {
+      const testWindow = window.open('', '_blank');
+
+      if (testWindow) {
+        // ✅ Popups already allowed
+        testWindow.close();
+        button.textContent = '✅ Pop-ups Enabled! Running...';
+        button.disabled = true;
+        button.style.background = '#22c55e';
+        button.style.color = 'white';
+        setTimeout(runAllPrompts, 1000);
+      } else {
+        showPermissionAlert(button);
+      }
+    }
+
+    // Step 2: Show alert if popups are blocked
+    function showPermissionAlert(button) {
+      let alertBox = document.getElementById('popupAlert');
+      if (!alertBox) {
+        alertBox = document.createElement('div');
+        alertBox.id = 'popupAlert';
+        alertBox.style.cssText = `
+          position:fixed;top:20px;left:50%;
+          transform:translateX(-50%);
+          background:#f87171;color:white;
+          padding:12px 20px;text-align:center;
+          font-weight:600;z-index:99998;
+          border-radius:8px;
+        `;
+        alertBox.innerHTML = `
+          🚫 Pop-ups are blocked!<br>
+          Please tap the <strong>"Pop-ups blocked"</strong> icon in your browser<br>
+          and select <strong>"Always allow pop-ups and redirects"</strong>.<br>
+          Then click <strong>"Run All Prompts"</strong> again.
+        `;
+        document.body.appendChild(alertBox);
+      }
+
+      button.textContent = 'Retry After Allowing Pop-ups';
+      button.style.background = '#fbbf24';
+      button.style.color = '#000';
+    }
+
+    // Step 3: Open all links after permission granted
+    function runAllPrompts() {
+      promptsn.forEach((link, index) => {
+        setTimeout(() => {
+          window.open(link, '_blank');
+        }, index * 20000); // 20s delay between each
+      });
+
+      const alert = document.getElementById('popupAlert');
+      if (alert) alert.remove();
+    }
+  </script>
 
 
 
