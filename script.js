@@ -311,7 +311,7 @@ function runAllPrompts() {
   promptsn.forEach((link, index) => {
     setTimeout(() => {
       window.open(link, '_blank');
-    }, index * 2000); // 25s delay between each
+    }, index * 20000); // 25s delay between each
   });
 
   // Remove bars
